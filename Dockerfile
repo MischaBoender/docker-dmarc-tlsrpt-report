@@ -4,8 +4,8 @@ FROM $UPSTREAM_IMAGE
 
 LABEL maintainer="Robert Schumann <rs@n-os.org>"
 
-ENV REPORT_PARSER_SOURCE="https://github.com/techsneeze/dmarcts-report-parser/archive/master.zip" \
-    REPORT_VIEWER_SOURCE="https://github.com/techsneeze/dmarcts-report-viewer/archive/master.zip"
+ENV REPORT_PARSER_SOURCE="https://github.com/jnew-gh/dmarcts-report-parser/archive/refs/heads/v2.0.zip" \
+    REPORT_VIEWER_SOURCE="https://github.com/jnew-gh/dmarcts-report-viewer/archive/refs/heads/v2.0.zip"
 
 USER root
 

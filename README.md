@@ -27,7 +27,8 @@ New reports will be fetched every 15 minutes past the hour, every hour. Therefor
 The variables should be self-explanatory. Make sure to create the IMAP folders before the cron job runs!
 
 **compose.yml**
-```version: '3.6'
+```yaml
+version: '3.6'
 
 volumes:
   dmarc-tls-data:

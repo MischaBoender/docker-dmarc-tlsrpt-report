@@ -68,6 +68,7 @@ RUN set -x \
 	Socket \
 	Socket6 \
         PerlIO::gzip \
+        JSON \
         ; do cpan install $i; done \
       && apk del mariadb-dev expat-dev openssl-dev perl-dev g++ make musl-obstack-dev libpq-dev
 

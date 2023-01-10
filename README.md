@@ -1,6 +1,6 @@
-# docker-dmarc-report [![Build Status](https://jenkins.bln.space/buildStatus/icon?job=docker-images%2Fdocker-dmarc-report%2Fmaster)](https://jenkins.bln.space/job/docker-images/job/docker-dmarc-report/job/master/) [![Docker Pulls](https://img.shields.io/docker/pulls/gutmensch/dmarc-report.svg)](https://registry.hub.docker.com/u/gutmensch/dmarc-report/)
+# docker-dmarc-report
 
-This image is intended to combine a dmarc report parser (see https://github.com/techsneeze/dmarcts-report-parser by TechSneeze.com and John Bieling) with a report viewer (see https://github.com/techsneeze/dmarcts-report-viewer/ by the same people) into a runnable docker image / microservice.
+This image is intended to combine a dmarc report parser (see https://github.com/jnew-gh/dmarcts-report-parser/tree/v2.0 by TechSneeze.com and John Bieling with TLS-RPT add-on by jnew-gh) with a report viewer (see https://github.com/jnew-gh/dmarcts-report-viewer/tree/v2.0 by the same people) into a runnable docker image / microservice.
 
 It fetches dmarc report mails regularly from an IMAP server, stores them into a MySQL DB and visualizes them via Webserver/PHP module.
 
@@ -14,34 +14,30 @@ It fetches dmarc report mails regularly from an IMAP server, stores them into a 
 3. Run this docker image with below mentioned env vars
 4. Access port 80 on the container (or 443) or put it behind a reverse proxy to view reports
 ```
-docker pull gutmensch/dmarc-report
-docker run -e ... -ti gutmensch/dmarc-report
+docker compose build
+docker compose up -d
 ```
 
-New dmarc reports will be fetched every 15 minutes past the hour, every hour. Therefore it can take up to one hour for the first report to be fetched.
+New reports will be fetched every 15 minutes past the hour, every hour. Therefore it can take up to one hour for the first report to be fetched.
 
-## Versions for last build latest and docker image tag 1.3
-dmarcts report viewer: 2022-08-10
-
-dmarcts report parser: 2022-08-10
-
-CAUTION: The old gutmensch/dmarc-report:latest image (older alpine, php5, etc.) is available still as gutmensch/dmarc-report:0.5. The current latest (and 1.0) uses the latest alpine version, newer MySQL client libraries, newer OpenSSL, etc. and improves compatibilitiy with MySQL 8+.
-
-## Frontend Screenshot
+## Frontend Screenshot (pre-TLS RPT)
 ![DMARC Report Viewer](https://github.com/gutmensch/docker-dmarc-report/blob/master/screenshot.png?raw=true)
 
 ## Sample docker compose / Environment variables
 The variables should be self-explanatory. Make sure to create the IMAP folders before the cron job runs!
 
-**docker-compose.yml**
-```yaml
-version: '3.6'
+**compose.yml**
+```version: '3.6'
+
+volumes:
+  dmarc-tls-data:
 
 services:
-  dmarc-report:
-    image: "gutmensch/dmarc-report:latest"
-    hostname: dmarc-report
-    container_name: dmarc-report
+  dmarc-tls-report:
+    build: /path/to/docker-dmarc-tlsrpt-report
+    hostname: dmarc-tls-report
+    container_name: dmarc-tls-report
+    restart: unless-stopped
     depends_on:
       - db
     ports:
